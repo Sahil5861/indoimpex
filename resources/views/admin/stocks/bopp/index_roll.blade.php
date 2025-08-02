@@ -49,7 +49,7 @@
             <div class="content">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title">BOPP</h5>
+                        <h5 class="card-title">BOPP | Roll Form</h5>
                         @include('admin.stocks.bopp.common_links')
                     </div>
                     <div class="card-body">
@@ -127,6 +127,8 @@
             processing: true,
             serverSide: true,
             ajax: "{{ route('admin.material-stock.bopproll-list') }}",
+            lengthMenu: [[100, 150, 200], [100, 150, 200]], // 👈 custom pagination lengths
+            pageLength: 100, // 👈 default number of rows to show
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
                 { data: 'roll_number', name: 'roll_number' },

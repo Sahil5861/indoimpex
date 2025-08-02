@@ -166,6 +166,7 @@
                 const url = btn.getAttribute('data-url');
                 const jobId = btn.getAttribute('data-id');
 
+
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You are about to Delete this.",
