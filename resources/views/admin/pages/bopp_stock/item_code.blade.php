@@ -8,14 +8,14 @@
             <div class="page-header page-header-light shadow">
                 <div class="page-header-content d-lg-flex">
                     <div class="d-flex">
-                        <h4 class="page-title mb-0">
+                        {{-- <h4 class="page-title mb-0">
                             Dashboard - <span class="fw-normal">BOPP Item List</span>
                         </h4>
                         <a href="#page_header"
                             class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto"
                             data-bs-toggle="collapse">
                             <i class="ph-caret-down collapsible-indicator ph-sm m-1"></i>
-                        </a>
+                        </a> --}}
                     </div>
                 </div>
             </div>
@@ -246,6 +246,8 @@
                     d.status = $('#status').val();
                 }
             },
+            lengthMenu: [[100, 150, 200], [100, 150, 200]], // 👈 custom pagination lengths
+            pageLength: 100, // 👈 default number of rows to show
             columns: [
                 {
                     data: null,
@@ -395,12 +397,12 @@
         var pp_size = $(element).data('pp_size');
         var pp_category = $(element).data('pp_category');
         var pp_gms = $(element).data('pp_gms');        
-
+        
         $('#editrole').modal('show');
         $('#editrole').find('#roleid').val(id);
         $('#editrole').find('#item_code1').val(item_code);
         $('#editrole').find('#pp_size1').val(pp_size);        
-        $('#editrole').find('#pp_category').val(pp_category).trigger('change');
+        $('#editrole').find('#pp_category1').val(pp_category);
         $('#editrole').find('#pp_gms').val(pp_gms);
         
     }

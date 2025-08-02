@@ -8,14 +8,14 @@
             <div class="page-header page-header-light shadow">
                 <div class="page-header-content d-lg-flex">
                     <div class="d-flex">
-                        <h4 class="page-title mb-0">
+                        {{-- <h4 class="page-title mb-0">
                             Dashboard - <span class="fw-normal">Job Types List</span>
                         </h4>
                         <a href="#page_header"
                             class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto"
                             data-bs-toggle="collapse">
                             <i class="ph-caret-down collapsible-indicator ph-sm m-1"></i>
-                        </a>
+                        </a> --}}
                     </div>
                 </div>
             </div>
@@ -73,12 +73,12 @@
                                     <tr>
                                         <th><input type="checkbox" id="select-all"></th>
                                         <th>S.NO</th>
-                                        @if(hasPermission('Job Type Update', 'Update') || hasPermission('Job Type Delete', 'Delete'))
-                                        <th class="text-center">Actions</th>                                                         
-                                        @endif                 
+                                        {{-- @if(hasPermission('Job Type Update', 'Update') || hasPermission('Job Type Delete', 'Delete'))
+                                        @endif                  --}}
                                         <th>Job Type</th>                                        
                                         <th>Type Value</th>                                        
-                                        <th>Cerated at</th>                                        
+                                        <th>Created at</th>                                        
+                                        <th class="text-center">Actions</th>                                                         
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -259,6 +259,8 @@
                     d.status = $('#status').val();
                 }
             },
+            lengthMenu: [[100, 150, 200], [100, 150, 200]], // 👈 custom pagination lengths
+            pageLength: 100, // 👈 default number of rows to show
             columns: [
                 {
                     data: null,
@@ -270,12 +272,10 @@
                     }
                 },
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false  },
-                @if(hasPermission('Job Type Update', 'Update') || hasPermission('Job Type Delete', 'Delete'))
-                { data: 'action', name: 'action', orderable: false, searchable: false },                
-                @endif
                 { data: 'job_type', name: 'job_type' },                
                 { data: 'type_value', name: 'type_value' },                
-                { data: 'created_at', name: 'created_at', width:'20%' }                              
+                { data: 'created_at', name: 'created_at', width:'20%' },                              
+                { data: 'action', name: 'action', orderable: false, searchable: false }                
             ],
 
             order: [[1, 'desc']],

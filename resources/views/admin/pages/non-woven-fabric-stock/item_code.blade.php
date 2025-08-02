@@ -8,14 +8,14 @@
             <div class="page-header page-header-light shadow">
                 <div class="page-header-content d-lg-flex">
                     <div class="d-flex">
-                        <h4 class="page-title mb-0">
+                        {{-- <h4 class="page-title mb-0">
                             Dashboard - <span class="fw-normal">Master Non Woven List</span>
                         </h4>
                         <a href="#page_header"
                             class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto"
                             data-bs-toggle="collapse">
                             <i class="ph-caret-down collapsible-indicator ph-sm m-1"></i>
-                        </a>
+                        </a> --}}
                     </div>
                 </div>
             </div>
@@ -51,14 +51,14 @@
                                     <tr>  
                                         <th><input type="checkbox" id="select-all"></th>                                      
                                         <th>S.NO</th>
-                                        @if(hasPermission('Non Woven Fabric Items Update', 'Update') || hasPermission('Non Woven Fabric Items Delete', 'Delete'))
-                                        <th class="text-center">Actions</th>                                        
-                                        @endif
+                                        {{-- @if(hasPermission('Non Woven Fabric Items Update', 'Update') || hasPermission('Non Woven Fabric Items Delete', 'Delete'))
+                                        @endif --}}
                                         <th>Item Code</th>
                                         <th>Item Size</th>
                                         <th>Item Color</th>                                        
                                         <th>GMS </th>                                        
                                         <th>Created At</th>                                                                                
+                                        <th class="text-center">Actions</th>                                        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -235,6 +235,8 @@
                     d.status = $('#status').val();
                 }
             },
+            lengthMenu: [[100, 150, 200], [100, 150, 200]], // 👈 custom pagination lengths
+            pageLength: 100, // 👈 default number of rows to show
             columns: [
                 {
                     data: null,
@@ -246,14 +248,12 @@
                     }
                 },
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-                @if(hasPermission('Non Woven Fabric Items Update', 'Update') || hasPermission('Non Woven Fabric Items Delete', 'Delete'))
-                { data: 'action', name: 'action', orderable: false, searchable: false },                
-                @endif
                 { data: 'item_code', name: 'item_code'},
                 { data: 'non_size', name: 'size', orderable: false, searchable: false},
                 { data: 'non_color', name: 'color', orderable: false, searchable: false },                                
                 { data: 'non_gsm', name: 'non_gsm' },                                
-                { data: 'created_at', name: 'created_at' }                                
+                { data: 'created_at', name: 'created_at' },                                
+                { data: 'action', name: 'action', orderable: false, searchable: false }                
             ],
 
             order: [[3, 'desc']],
