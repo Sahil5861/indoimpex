@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use DataTables;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class PartyController extends Controller
 {
@@ -19,7 +20,7 @@ class PartyController extends Controller
         if ($request->ajax()) {
             $query = Party::query();
 
-            $data = $query->orderBy('created_at', 'desc')->get();
+            $data = $query->get();
             return DataTables::of($data)
                 ->addIndexColumn()
 
@@ -72,7 +73,8 @@ class PartyController extends Controller
                     return $row->party_name ? $row->party_name : '';
                 })
                 ->editColumn('created_at', function ($row) {
-                    return $row->created_at ? $row->created_at->format('d M Y') : 'N/A';
+                    // return $row->created_at ? Carbon::parse($row->created_at)->format('d M Y, h:i  A') : 'N/A';
+                    return $row->created_at;
                 })
                 ->rawColumns(['action', 'status'])
                 ->make(true);

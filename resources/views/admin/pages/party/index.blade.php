@@ -311,7 +311,7 @@
             pageLength: 100, // 👈 default number of rows to show
             columns: [
                 {
-                    data: null,
+                    data: 'id',
                     name: 'select',
                     orderable: false,
                     searchable: false,

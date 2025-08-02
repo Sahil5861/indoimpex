@@ -45,7 +45,7 @@ class NonWovenCategoryController extends Controller
 
                     // Delete Button
                     if (hasPermission('Non Woven Fabric Items Delete', 'Delete')) {
-                        $action .= '<a href="' . route('admin.NonWovenCategory.remove', $row->id) . '" 
+                        $action .= '<a href="#" data-url="' . route('admin.NonWovenCategory.remove', $row->id) . '" 
                                         data-id="' . $row->id . '" 
                                         class="btn-sm delete-button" 
                                         title="Delete this Category">
@@ -115,7 +115,7 @@ class NonWovenCategoryController extends Controller
         if (count($item) > 0) {
             return redirect()->back()->with('error', "This Category is used in other Table. Can't delete");
         }
-        dd($category, $item, 'hi'); exit;
+        
 
         if ($category->delete()) {
             return back()->with('success', 'Non Woven Category deleted Suuccessfully !!');

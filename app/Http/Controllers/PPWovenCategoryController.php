@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PPWovenCategory;
+use App\Models\PPWovenItem;
+
 
 
 use Carbon\Carbon;
@@ -45,7 +47,7 @@ class PPWovenCategoryController extends Controller
 
                     // Delete Button
                     if (hasPermission('PP Woven Fabric stock Categories Delete', 'Delete')) {
-                        $action .= '<a href="' . route('admin.PPWovenCategory.remove', $row->id) . '" 
+                        $action .= '<a href="#" data-url="' . route('admin.PPWovenCategory.remove', $row->id) . '" 
                                         data-id="' . $row->id . '" 
                                         class="btn-sm delete-button" 
                                         title="Delete this Category">

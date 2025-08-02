@@ -48,7 +48,7 @@ class PPWovenItemController extends Controller
 
                     // Delete Button
                     if (hasPermission('PP Woven Fabric stock Items Delete', 'Delete')) {
-                        $action .= '<a href="' . route('admin.PPWovenItem.remove', $row->id) . '" 
+                        $action .= '<a href="#" data-url="' . route('admin.PPWovenItem.remove', $row->id) . '" 
                                         data-id="' . $row->id . '" 
                                         class="btn-sm delete-button" 
                                         title="Delete this Item">

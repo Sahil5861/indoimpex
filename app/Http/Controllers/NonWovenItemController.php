@@ -49,7 +49,7 @@ class NonWovenItemController extends Controller
 
                     // Delete Button
                     if (hasPermission('Non Woven Fabric Items Delete', 'Delete')) {
-                        $action .= '<a href="' . route('non-wovenfabricstock.items.delete', $row->id) . '" 
+                        $action .= '<a href="#" data-url="' . route('non-wovenfabricstock.items.delete', $row->id) . '" 
                                         data-id="' . $row->id . '" 
                                         class="btn-sm delete-button" 
                                         title="Delete this Item">
@@ -137,7 +137,7 @@ class NonWovenItemController extends Controller
         if (count($job_fibre) > 0) {
             return redirect()->back()->with('error', "This Item is used in other Tables. Can't delete");
         }
-        dd($job_fibre,'hii'); exit;
+        // dd($job_fibre,'hii'); exit;
         if ($item && $item->delete()) {
             return redirect()->route('non-wovenfabricstock.items.view')->with('success', 'Item deleted Suuccessfully !!');
         } else {

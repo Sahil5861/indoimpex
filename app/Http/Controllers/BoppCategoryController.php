@@ -43,7 +43,7 @@ class BoppCategoryController extends Controller
 
                     // Delete button
                     if (hasPermission('Bopp Stock Categories Delete', 'Delete')) {
-                        $action .= '<a href="' . route('admin.bopp-stock-pp-categories.remove', $row->id) . '" 
+                        $action .= '<a href="#" data-url="' . route('admin.bopp-stock-pp-categories.remove', $row->id) . '" 
                                         data-id="' . $row->id . '" 
                                         class="btn-sm delete-button" 
                                         title="Delete this Category">
