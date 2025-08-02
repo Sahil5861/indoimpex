@@ -232,6 +232,16 @@
 									</ul>
 								</li>
 						
+
+								@if (hasPermission('Order Book View', 'View'))						
+								<li class="nav-item">
+									<a href="{{ route('jobdetails.view') }}" class="navbar-nav-link {{ Route::currentRouteName() === 'orderbooks.items.view' ? 'rounded active' : '' }}">
+										<i class="ph-receipt me-2"></i>
+										Job Detais										
+									</span>
+									</a>
+								</li>
+								@endif
 																								
 
 
@@ -244,23 +254,12 @@
 
 								{{-- job details --}}
 
-								@if (hasPermission('Job Details All View', 'View') || hasPermission('Job Details Pending View', 'View') || hasPermission('Job Details Saved View', 'View'))								
+								{{-- @if (hasPermission('Job Details All View', 'View') || hasPermission('Job Details Pending View', 'View') || hasPermission('Job Details Saved View', 'View'))								
 								<li class="nav-item nav-item-dropdown-lg dropdown">
 									<a href="#" class="navbar-nav-link dropdown-toggle {{ Route::currentRouteName() === 'jobdetails.view' ? 'rounded active' : '' }}" data-bs-toggle="dropdown">
 										<i class="ph-clipboard-text me-2"></i>
 										Job details
 									</a>
-
-									<?php
-										$allJobesCount = \App\Models\JobDetails::where('approval_status', '1')->where('job_status', '1')->count();
-										$pendingJobesCount = \App\Models\JobDetails::where('approval_status', '0')->where('job_status', '1')->count();
-
-										$savedJobesCount = \App\Models\JobDetails::where('job_status', '0')->where('approval_status', '0')->where('saved_by', Auth::user()->id)->count();
-										if (Auth::user()->role_id == 1) {
-											$savedJobesCount = \App\Models\JobDetails::where('job_status', '0')->where('approval_status', '0')->count();
-										}
-										
-									?>
 
 									<div class="dropdown-menu dropdown-menu-end">											
 										@if (hasPermission('Job Details All View', 'View'))
@@ -276,7 +275,7 @@
 										@endif																			
 									</div>
 								</li>
-								@endif
+								@endif --}}
 
 								{{-- @endif --}}
 

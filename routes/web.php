@@ -245,6 +245,8 @@ Route::middleware(['auth'])->group(function () {
     
 
     // Job details
+    Route::get('admin/job-details', [JobdetailsController::class, 'index'])->name('jobdetails.view');    
+
     Route::get('admin/job-details-all', [JobdetailsController::class, 'index_all'])->name('jobdetails.view.all');    
     Route::get('admin/job-details-pending', [JobdetailsController::class, 'index_pending'])->name('jobdetails.view.pending');    
     Route::get('admin/job-details-saved', [JobdetailsController::class, 'index_saved'])->name('jobdetails.view.saved');    

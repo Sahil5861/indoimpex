@@ -51,6 +51,10 @@ class JobdetailsController extends Controller
         // dd($this->data['nextUniqueCode']); exit;
     }
 
+    public function index(){
+        return view('admin.pages.jobdetails.main');
+    }
+
     public function index_all(Request $request)
     {
         $type = 'all';
