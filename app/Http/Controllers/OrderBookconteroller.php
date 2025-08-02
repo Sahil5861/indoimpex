@@ -46,27 +46,21 @@ class OrderBookconteroller extends Controller
                 })
                 
                 ->addColumn('job_name', function ($row){
-                    // $order_job_code = JobDetails::where('id', $row->order_job_code)->first();
-                    // return JobNames::where('id', $order_job_code->job_name_id)->first()->job_name;                    
-
-                    $JobDetails = JobDetails::where('id', $row->order_job_code)->first();
-                    if ($JobDetails) {                        
-                        $jobName = JobNames::where('id', $JobDetails->job_name_id)->first();
-                        return '<span style="white-space:nowrap">'.$jobName->job_name.'</span>';
-                    }
-                    else{
-                        return '';
-                    }
+                    return $job_name = JobNames::where('id', $row->order_job_code)->first()->job_name;
                 })
                 
                 ->addColumn('quantity_pcs', function ($row){
-                    $job_details = JobDetails::where('id',$row->order_job_code)->first();
+                    $job_name = JobNames::where('id',$row->order_job_code)->first();
+                    $job_details = JobDetails::where('job_name_id', $job_name->id)->first();
                     return $row->quantity_type == 'pc' ? $row->quantity : number_format((float) $row->quantity / $job_details->bag_total_weight, 2, '.', '');                
+                    // return $row->quantity_type == 'pc' ? $row->quantity : number_format((float) $row->quantity);                
                 })
 
                 ->addColumn('quantity_kg', function ($row){
-                    $job_details = JobDetails::where('id',$row->order_job_code)->first();
+                    $job_name = JobNames::where('id',$row->order_job_code)->first();
+                    $job_details = JobDetails::where('job_name_id', $job_name->id)->first();
                     return $row->quantity_type == 'kg' ? $row->quantity : number_format((float)$job_details->bag_total_weight * $row->quantity * 0.001, 2, '.', '');                
+                    // return $row->quantity_type == 'kg' ? $row->quantity : $row->quantity;                
                 })
                 // ->addColumn('job_name', function ($row){
                 //     $order_job_code = JobDetails::where('id', $row->order_job_code)->first();
@@ -209,10 +203,13 @@ class OrderBookconteroller extends Controller
         if ($orderbook) {
             $response['orderbook'] = $orderbook;
             $party_name = Party::where('id', $orderbook->party_id)->first()->party_name ?? '';
-            $JobDetails = JobDetails::where('id', $orderbook->order_job_code)->first();
-            $jobName = JobNames::where('id', $JobDetails->job_name_id)->first();
+            $jobName = JobNames::where('id', $orderbook->order_job_code)->first();            
             $job_name = $jobName->job_name;
             $job_id = $jobName->id;
+
+            $JobDetails = JobDetails::where('job_name_id', $job_id)->first();
+
+            
 
 
             // $job_name = Jobname::where('id', )
@@ -222,6 +219,8 @@ class OrderBookconteroller extends Controller
             $response['job_code'] = $JobDetails->job_unique_code ?? '';
             // $response['JobDetails_id'] = $JobDetails->id ?? '';
             // print_r($response); exit;
+
+
             return response()->json([
                 'status' => true,
                 'data' => $response
@@ -235,16 +234,20 @@ class OrderBookconteroller extends Controller
         }
     }
 
-    public function getjobcode(Request $request, $val){
+    public function getjobcode(Request $request){
+        $val = $request->jobcode;
         $jobcode = JobDetails::where('job_unique_code', $val)->first();
+        
         $name_id = $jobcode->job_name_id;
         
         $job_name = JobNames::where('id', $name_id)->first();
+        $party = Party::where('id', $jobcode->party_id)->first();
 
         if ($jobcode) {                
             return response()->json([
                 'status' => true,
-                'job_name' => $job_name
+                'job_name' => $job_name,
+                'party' => $party,
             ]);
         }
         else{

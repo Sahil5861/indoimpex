@@ -166,6 +166,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('admin/users-delete/{id}', [UserController::class, 'remove'])->name('admin.users.delete');
     
 
+    Route::get('admin/masters', function (){
+        return view('admin.pages.master');
+    })->name('admin.masters');
+
 
     // party
     Route::get('admin/party', [PartyController::class, 'index'])->name('admin.party');
@@ -227,7 +231,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('admin/party/get-partyname-list/{val}', [OrderBookconteroller::class, 'getpartynamelist'])->name('get-partyname-list');
 
 
-    Route::get('admin/jobcode/get-jobcode/{val}', [OrderBookconteroller::class, 'getjobcode'])->name('get-jobcode');
+    Route::get('admin/jobcode/get-jobcode', [OrderBookconteroller::class, 'getjobcode'])->name('get-jobcode');
 
 
     // Job types
@@ -243,6 +247,7 @@ Route::middleware(['auth'])->group(function () {
     // Route::post('jobnames-delete-selected-items', [JobNamesController::class, 'multidelete'])->name('jobnames.deletemulti');    
     // Route::post('jobnames-update-status/{id}', [JobNamesController::class, 'updateStatus'])->name('jobnames.updatestatus');    
     
+
 
     // Job details
     Route::get('admin/job-details', [JobdetailsController::class, 'index'])->name('jobdetails.view');    

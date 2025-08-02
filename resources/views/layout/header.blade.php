@@ -233,9 +233,9 @@
 								</li>
 						
 
-								@if (hasPermission('Order Book View', 'View'))						
+								@if (hasPermission('Job Details All View', 'View') || hasPermission('Job Details Pending View', 'View') || hasPermission('Job Details Saved View', 'View'))								
 								<li class="nav-item">
-									<a href="{{ route('jobdetails.view') }}" class="navbar-nav-link {{ Route::currentRouteName() === 'orderbooks.items.view' ? 'rounded active' : '' }}">
+									<a href="{{ route('jobdetails.view') }}" class="navbar-nav-link {{ (Route::currentRouteName() === 'jobdetails.view.all' || Route::currentRouteName() === 'jobdetails.view.pending' || Route::currentRouteName() === 'jobdetails.view.saved' || Route::currentRouteName() === 'jobdetails.view') ? 'rounded active' : '' }}">
 										<i class="ph-receipt me-2"></i>
 										Job Detais										
 									</span>

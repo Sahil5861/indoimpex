@@ -7,6 +7,10 @@
         background-color: #2b7975;
         color: #fff !important;
     }
+
+    .suggestions li.highlight {
+        background-color: #f0f0f0;
+    }  
 </style>
 <div class="page-content">
     {{-- @include('layouts.sidebar') --}}
@@ -105,7 +109,7 @@
                                 <h4 class="float-right">
                                     Date :
                                     <span>
-                                        <input type="date" class="form-control change_date" id="submit_date" name="submit_date" required value="{{ old('order.submit_date') }}">
+                                        <input type="text" class="form-control change_date" id="submit_date" name="submit_date" required value="{{ \Carbon\Carbon::now()->format('d-m-Y') }}" readonly>
                                     </span>
                                 </h4>
                             </div>
@@ -135,7 +139,7 @@
                                 <div class="form-group">
                                     <label>Job Code :</label>
                                     <input type="text" id="autocomplete" class="form-control" required placeholder="Enter Job Code" autocomplete="off" oninput="makeJobcodeList(this);" style="position: relative;">
-                                    <div id="job-list" style="position: absolute;width: 100%;top: 80%;background-color: #fff;z-index: 10; display:none; overflow:auto; max-height:400px;"></div>
+                                    <div id="job-list" class="suggestions" style="position: absolute;width: 100%;top: 80%;background-color: #fff;z-index: 10; display:none; overflow:auto; max-height:290px;"></div>
                                 </div>
                                 <input type="hidden" name="order_job_code" id="job_code_id">
                             </div>
@@ -144,8 +148,9 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Party Name :</label>
-                                    <input type="text" id="party_name" class="form-control" required placeholder="Enter Party Name" name="party_name" autocomplete="off" value="{{ old('party_name') }}" oninput="makePartyNameList(this)"  style="position: relative;">
-                                    <div id="party-list" style="position: absolute;width: 90%;top: 80%;background-color: #fff;z-index: 10; display:none; overflow:auto; max-height:400px;"></div>                                    
+                                    {{-- <input type="text" id="party_name" class="form-control" required placeholder="Enter Party Name" name="party_name" autocomplete="off" value="{{ old('party_name') }}" oninput="makePartyNameList(this)"  style="position: relative;"> --}}
+                                    <input type="text" id="party_name" class="form-control" required placeholder="Party Name" name="party_name" autocomplete="off" value="{{ old('party_name') }}"  style="position: relative;" readonly>
+                                    {{-- <div id="party-list"  style="position: absolute;width: 90%;top: 80%;background-color: #fff;z-index: 10; display:none; overflow:auto; max-height:400px;"></div>                                     --}}
                                 </div>
                             </div>
 
@@ -153,7 +158,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Job Name :</label>
-                                    <input type="text" id="job_name" class="form-control" required placeholder="Enter Job Name" name="job_name" value="{{ old('job_name') }}">
+                                    <input type="text" id="job_name" class="form-control" required placeholder="Enter Job Name" name="job_name" value="{{ old('job_name') }}" readonly>
                                 </div>
                             </div>
 
@@ -378,6 +383,72 @@
         }
     });
 
+    let selectedPartyIndex = -1;
+    $('#autocomplete').on('keydown', function (event){
+
+        if (event.key === 'Backspace' || event.key === 'Delete') {
+            return;
+        }
+
+        // alert(event.key);
+
+        if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+            let items = $('#job-list li');            
+
+            if (items.length === 0) return;
+
+            // Remove existing highlight
+            items.removeClass('highlight');
+
+            if (event.key === 'ArrowDown') {                
+                selectedPartyIndex = (selectedPartyIndex + 1) % items.length;
+                $('#autocomplete').val(items.eq(selectedPartyIndex).text());
+            } else if (event.key === 'ArrowUp') {
+
+                if (selectedPartyIndex == 0) {
+                    $('#autocomplete').focus();
+                    selectedPartyIndex = -1;
+                    return;
+                }
+                selectedPartyIndex = (selectedPartyIndex - 1 + items.length) % items.length;
+                $('#autocomplete').val(items.eq(selectedPartyIndex).text());
+            }
+
+            // Add highlight to the selected item
+            items.eq(selectedPartyIndex).addClass('highlight');
+            return;
+        }
+
+        // On Enter key
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            const items = $('#job-list li'); 
+
+            jobSuggestions = [];
+
+
+            jobSuggestions = Array.from(items).map(item => $(item).text().trim());
+                    
+            $('#job-list').hide();
+
+            if (items.length > 0 && selectedPartyIndex >= 0) {
+                $('#autocomplete').val(items.eq(selectedPartyIndex).text());
+            } else if (jobSuggestions.length > 0) {
+                const currentVal = $('#autocomplete').val().toLowerCase();
+                const exactMatch = jobSuggestions.find(p => p.toLowerCase() === currentVal);
+
+                if (!exactMatch) {
+                    $('#autocomplete').val(jobSuggestions[0]);
+                }
+            }
+            
+            selectedPartyIndex = -1;    
+            
+            manageJobcode();
+            return false;
+        }
+    })
+
     var table = $('#example5').DataTable({});
     $(".close_table").click(function() {
         $(this).closest("tr").hide();
@@ -398,7 +469,7 @@
                 
                 if (data.jobcode) {                    
                     $.each(data.jobcode, function(key, value) {                    
-                        html += `<li style="padding:10px; cursor:pointer; list-style:none; border:1px solid #888;" onclick="manageJobcode(this)">${value}</li>`
+                        html += `<li style="padding:10px; cursor:pointer; list-style:none;" onclick="manageJobcode()">${value}</li>`
                     })
                     $('#job-list').append(html).show();
                 }
@@ -409,45 +480,49 @@
         })
     }
 
-    function makePartyNameList(elem){
-        var partyname = $(elem).val();
-        $.ajax({
-            url: `{{ url('admin/party/get-partyname-list') }}/${partyname}`,
-            method: 'GET',
-            success: function(data) {
-                var html = '';
-                $('#party-list').empty();
-                console.log(data);
+    // function makePartyNameList(elem){
+    //     var partyname = $(elem).val();
+    //     $.ajax({
+    //         url: `{{ url('admin/party/get-partyname-list') }}/${partyname}`,
+    //         method: 'GET',
+    //         success: function(data) {
+    //             var html = '';
+    //             $('#party-list').empty();
+    //             console.log(data);
                 
-                if (data.parties) {                    
-                    $.each(data.parties, function(key, value) {                    
-                        html += `<li style="padding:10px; cursor:pointer; list-style:none; border:1px solid #888;" onclick="party_name.value = this.innerText; $('#party-list').hide();">${value}</li>`
-                    })
-                    $('#party-list').append(html).show();
-                }
-                else{
-                    $('#party-list').empty().hide();
-                }
-            }
-        })
-    }
+    //             if (data.parties) {                    
+    //                 $.each(data.parties, function(key, value) {                    
+    //                     html += `<li style="padding:10px; cursor:pointer; list-style:none; border:1px solid #888;" onclick="party_name.value = this.innerText; $('#party-list').hide();">${value}</li>`
+    //                 })
+    //                 $('#party-list').append(html).show();
+    //             }
+    //             else{
+    //                 $('#party-list').empty().hide();
+    //             }
+    //         }
+    //     })
+    // }
 
-    function manageJobcode(elem){
-        var jobcode = $(elem).text();
+    function manageJobcode(){
+        var jobcode = $('#autocomplete').val();        
         $.ajax({
-            url: `{{ url('admin/jobcode/get-jobcode') }}/${jobcode}`,
+            url: `{{ route('get-jobcode') }}`,
             method: 'GET',
-            success: function(data) {
-                console.log(data);
+            data :{
+                jobcode : jobcode,
+            },
+            success: function(data) {                
                 $('#autocomplete').val(jobcode);
-
                 $('#job_name').val(data.job_name.job_name)
                 $("#job_code_id").val(data.job_name.id);
+                $("#party_name").val(data.party.party_name);
             }
         })
 
         $('#job-list').hide();        
     }
+
+    
 
 </script>
 
