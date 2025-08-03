@@ -28,7 +28,7 @@
 </style>
 @section('content')
 <div class="page-content">
-    @include('admin.stocks.bopp.sidebar', ['sidebarTitle' => 'BOPP | Consolidated'])
+    @include('admin.stocks.sidebar', ['sidebarTitle' => 'BOPP | Roll Form'])
     {{-- @include('layouts.sidebar') --}}
     <div class="content-wrapper">
         <div class="content-inner">
