@@ -267,7 +267,7 @@
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ],
 
-            // order: [[4, 'desc']],
+            order: [[6, 'desc']],
             drawCallback: function (settings) {
                 $('#select-all').on('click', function () {
                     var isChecked = this.checked;

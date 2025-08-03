@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="page-content">
-    {{-- @include('layouts.sidebar') --}}
+    @include('admin.pages.sidebar', ['sidebarTitle' => 'Masters'])
     <div class="content-wrapper">
         <div class="content-inner">
             <div class="page-header page-header-light shadow">

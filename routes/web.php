@@ -232,6 +232,9 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('admin/jobcode/get-jobcode', [OrderBookconteroller::class, 'getjobcode'])->name('get-jobcode');
+    Route::get('get-jobcode-party', [OrderBookconteroller::class, 'getjobcodeParty'])->name('get-jobcode-party');
+
+    Route::get('get-job-names', [OrderBookconteroller::class, 'getJobNames'])->name('get-job-names');
 
 
     // Job types

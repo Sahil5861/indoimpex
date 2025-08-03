@@ -126,14 +126,11 @@
 								</li>
 																												
 								@if (hasPermission('Bopp Stock Items View', 'View') ||  hasPermission('Bopp Stock Categories View', 'View') || hasPermission('Non Woven Fabric Items View', 'View') || hasPermission('Non Woven Fabric Categories View', 'View') || hasPermission('PP Woven Fabric stock Items View', 'View') || hasPermission('PP Woven Fabric stock Categories View', 'View') || hasPermission('Party View', 'View') || hasPermission('Job Type View', 'View') || hasPermission('Job Name View', 'View'))								
-									<li class="nav-item dropdown">
-										<a href="#" class="navbar-nav-link dropdown-toggle {{$isActiveMaster ? 'rounded active' : ''}}" data-bs-toggle="dropdown">
+									<li class="nav-item">
+										<a href="{{route('admin.masters')}}" class="navbar-nav-link {{$isActiveMaster ? 'rounded active' : ''}}">
 											<i class="ph-gear me-2"></i> Masters
 										</a>
-										<ul class="dropdown-menu">
-											{{-- {{ request()->routeIs(['boppstock.items.view', 'bopp-stock.categories.view']) ? 'show' : '' }} --}}
-
-											{{-- Bopp Stock --}}
+										{{-- <ul class="dropdown-menu">																					
 												@if (hasPermission('Bopp Stock Items View', 'View') ||  hasPermission('Bopp Stock Categories View', 'View'))								
 												<li class="dropdown-submenu ">
 													<a class="dropdown-item dropdown-toggle" href="#">Bopp Stock</a>
@@ -148,8 +145,7 @@
 													</ul>
 												</li>							
 												@endif
-															
-											{{-- Non Woven --}}		
+																											
 												@if (hasPermission('Non Woven Fabric Items View', 'View') || hasPermission('Non Woven Fabric Categories View', 'View'))														
 												<li class="dropdown-submenu">
 													<a class="dropdown-item dropdown-toggle" href="#">Non-Woven Fabric Stock </a>
@@ -163,8 +159,7 @@
 													</ul>
 												</li>							
 												@endif
-
-											{{-- PP Woven --}}								
+																		
 												@if (hasPermission('PP Woven Fabric stock Items View', 'View') || hasPermission('PP Woven Fabric stock Categories View', 'View'))									
 												<li class="dropdown-submenu">
 													<a class="dropdown-item dropdown-toggle" href="#">PP-Woven Fabric Stock</a>
@@ -190,7 +185,7 @@
 												<a class="dropdown-item" href="{{ route('jobtypes.view') }}">Job Type (<span class="text-success-2 fw-bold">{{$jobtype}}</span>)</a>
 											</li>
 											@endif											
-										</ul>
+										</ul> --}}
 									</li>
 								@endif
 

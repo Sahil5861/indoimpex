@@ -20,19 +20,7 @@
         <!-- Sidebar header -->
         <div class="sidebar-section">
             <div class="sidebar-section-body d-flex justify-content-center">
-                <h5 class="sidebar-resize-hide flex-grow-1 my-auto">{{$sidebarTitle}}</h5>
-
-                {{-- <div>
-                    <button type="button"
-                        class="btn btn-flat-white btn-icon btn-sm rounded-pill border-transparent sidebar-control sidebar-main-resize d-none d-lg-inline-flex">
-                        <i class="ph-arrows-left-right"></i>
-                    </button>
-
-                    <button type="button"
-                        class="btn btn-flat-white btn-icon btn-sm rounded-pill border-transparent sidebar-mobile-main-toggle d-lg-none">
-                        <i class="ph-x"></i>
-                    </button>
-                </div> --}}
+                <h5 class="sidebar-resize-hide flex-grow-1 my-auto">{{$sidebarTitle}}</h5>                
             </div>
         </div>
         <!-- /sidebar header -->
@@ -41,10 +29,29 @@
         <div class="sidebar-section">
             <ul class="nav nav-sidebar" data-nav-type="accordion">
                 <!-- Main -->
-                <li class="nav-item-header pt-0">
+                {{-- <li class="nav-item-header pt-0">
                     <div class="text-uppercase fs-sm lh-sm opacity-50 sidebar-resize-hide">Main</div>
                     <i class="ph-dots-three sidebar-resize-show"></i>
+                </li> --}}
+
+                @if (Route::currentRouteName() != 'jobdetails.view')                    
+                <li class="nav-item">
+                    <div class="row p-2">
+                        <div class="col-lg-6 mb-2">
+                            @if (hasPermission('Job Details All Save', 'Save') || hasPermission('Job Details Pending Save', 'Save'))                                    
+                                @if ($request_type != 'saved')                                    
+                                    <a href="#" class="text-white btn btn-primary-2 w-100" onclick="openAddModal();">+ Add</a>
+                                @endif
+                            @endif
+                        </div>
+                        <div class="col-lg-6 mb-2" style="display: none" id="multidelete-btn">
+                            @if (hasPermission('Job Details All Delete', 'Delete') || hasPermission('Job Details Pending Delete', 'Delete') || hasPermission('Job Details Saved Delete', 'Delete'))                                    
+                            <button class="btn btn-danger w-100" id="delete-selected">Delete</button>
+                            @endif
+                        </div>
+                    </div>
                 </li>
+                @endif
 
                 <li class="nav-item">
                     <a href="{{ route('jobdetails.view') }}"
@@ -122,3 +129,4 @@
     <!-- /sidebar content -->
 </div>
 <!-- /main sidebar -->
+

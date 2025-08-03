@@ -52,7 +52,10 @@ class OrderBookconteroller extends Controller
                 ->addColumn('quantity_pcs', function ($row){
                     $job_name = JobNames::where('id',$row->order_job_code)->first();
                     $job_details = JobDetails::where('job_name_id', $job_name->id)->first();
-                    return $row->quantity_type == 'pc' ? $row->quantity : number_format((float) $row->quantity / $job_details->bag_total_weight, 2, '.', '');                
+
+                    $total_weight = $job_details->bag_total_weight > 0 ? $job_details->bag_total_weight : 1;
+                    
+                    return $row->quantity_type == 'pc' ? $row->quantity : number_format((float) $row->quantity / $total_weight, 2, '.', '');                
                     // return $row->quantity_type == 'pc' ? $row->quantity : number_format((float) $row->quantity);                
                 })
 
@@ -121,8 +124,8 @@ class OrderBookconteroller extends Controller
         
         $order_job_code = $request->order_job_code;
         
-        $bopp_details = JobBopp::where('id', $order_job_code)->first();
-        $fabric_details = JobFabric::where('id', $order_job_code)->first();
+        
+        
 
         $party_name = Party::where('party_name',$request->input('party_name'))->first();
         $main_order = !empty($id) ? OrderBook::where('id', $id)->first() :  new OrderBook();
@@ -135,8 +138,16 @@ class OrderBookconteroller extends Controller
         // $main_order->order_unique_number = $request->order_unique_number;
         $main_order->order_unique_number = $formatted_unique_number;
         $main_order->order_job_code = $request->order_job_code;
-        $main_order->order_bopp_code = $bopp_details->bopp_item_code ?? '';
-        $main_order->order_fabric_code = $fabric_details->fabric_item_code;
+
+        $bopp_details = JobBopp::where('id', $order_job_code)->first();
+        if ($bopp_details) {            
+            $main_order->order_bopp_code = $bopp_details->bopp_item_code ?? '';
+        }
+
+        $fabric_details = JobFabric::where('id', $order_job_code)->first();
+        if ($fabric_details) {            
+            $main_order->order_fabric_code = $fabric_details->fabric_item_code ?? '';
+        }
         $main_order->party_id = $party_name->id;        
         $main_order->quantity = $request->quantity;
         $main_order->quantity_type = $request->quantity_type;
@@ -254,6 +265,55 @@ class OrderBookconteroller extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Not found !'
+            ]);
+        }
+    }
+
+    public function getjobcodeParty(Request $request){
+        $name = $request->job_name;
+        $job_name = JobNames::where('job_name', $name)->first();
+
+        $response = [];
+        if ($job_name) {            
+            $response['job_name'] = $job_name;
+            $job_details = JobDetails::where('job_name_id', $job_name->id)->first();
+            $response['job_code'] = $job_details->job_unique_code;
+
+            $party = Party::where('id', $job_details->party_id)->first();
+            $response['party'] = $party;
+
+            return response()->json([
+                'status' => true,
+                'data' => $response
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => false,
+                'message' => 'Job Name Not found !'
+            ]);
+        }
+
+        
+
+
+
+    }
+
+    public function getJobNames(Request $request){
+        $job_name = $request->val;
+        $job_names = JobNames::where('job_name', 'like', '%' . $job_name . '%')->get();
+
+        if (count($job_names) > 0) {
+            return response()->json([
+                'status' => true,
+                'job_names' => $job_names
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => false,
+                'message' => 'No Job Names found !'
             ]);
         }
     }

@@ -118,6 +118,10 @@
         top: 20px; /* distance from top of viewport */
         z-index: 1020; /* keep above content */
     }
+
+    .ph-magnifying-glass::before{
+        display: none;
+    }
     
 </style>
 
@@ -171,9 +175,8 @@
                         <div class="card">
                             <div class="card-header">
                                 <h5 class="card-title">Job Details | {{ ucfirst($request_type)}}</h5>
-                                <div class="card-tools text-end"
-                                    style="display: flex; align-items:center; justify-content: space-between;">
-                                    <div class="btns">
+                                <div class="card-tools text-end" style="display: flex; align-items:center; justify-content: space-between;">
+                                    {{-- <div class="btns">
                                         @if (hasPermission('Job Details All Save', 'Save') || hasPermission('Job Details Pending Save', 'Save'))                                    
                                         @if ($request_type != 'saved')                                    
                                             <a href="#" class="text-white btn btn-primary-2" onclick="openAddModal();">Add Job Details</a>
@@ -181,14 +184,8 @@
                                         @endif
                                         @if (hasPermission('Job Details All Delete', 'Delete') || hasPermission('Job Details Pending Delete', 'Delete') || hasPermission('Job Details Saved Delete', 'Delete'))                                    
                                         <button class="btn btn-danger" id="delete-selected">Delete Selected</button>
-                                        @endif
-                                        <br><br>
-                                        {{-- <select name="status" id="status" class="form-control">
-                                            <option value="">All</option>
-                                            <option value="1">Active</option>
-                                            <option value="0">Inactive</option>
-                                        </select> --}}
-                                    </div>
+                                        @endif                                        
+                                    </div> --}}
                                 </div>
                             </div>
                             <div class="card-body">
@@ -229,8 +226,8 @@
                                         </thead> --}}
                                         <thead>
                                             <tr>
-                                                <th>
-                                                    <input type="checkbox" id="select-all">
+                                                <th class="">
+                                                    <input type="checkbox" class="checkbox mx-auto " id="select-all" style="display:none;">
                                                     {{-- <button class="btn btn-sm btn-danger w-25"></button> --}}
                                                 </th>
                                                 <th>S.NO</th>
@@ -1193,6 +1190,7 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{{asset('assets/js/jquery/jquery.validate.min.js')}}"></script>
+
 
 @include('admin.pages.jobdetails.popover')
 
@@ -3216,6 +3214,16 @@
             },
             lengthMenu: [[100, 150, 200], [100, 150, 200]], // 👈 custom pagination lengths
             pageLength: 100, // 👈 default number of rows to show
+            dom: '<"row mb-2"<"col-sm-6 d-flex"Bf><"col-sm-6 text-end d-flex justify-content-end"l>>rtip',
+            buttons: [
+                {
+                    text: '<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>',
+                    className: 'btn btn-primary btn-sm me-2',
+                    action: function (e, dt, node, config) {                        
+                        togglecheckbox();
+                    }
+                }
+            ],            
             columns: [
                 {
                     data: null,
@@ -3223,8 +3231,8 @@
                     orderable: false,
                     searchable: false,
                     render: function (data, type, row) {
-                        return '<input type="checkbox" class="select-row" value="' + row.id + '">';
-                    }
+                        return '<input type="checkbox" class="select-row checkbox" style="display:none;"  value="' + row.id + '">';
+                    },width: '70px'
                 },
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: true, searchable: false  },                
                 { data: 'job_unique_code', name: 'job_unique_code', orderable: true, searchable: false  },                
@@ -3236,7 +3244,7 @@
                     { data: 'saved_by', name: 'saved_by', width: '300px' }, 
                     @endif
                 @endif
-                { data: 'total_weight', name: 'total_weight', width:'300px' },                                            
+                { data: 'total_weight', name: 'total_weight', width:'200px' },                                            
                 // { data: 'created_at', name: 'created_at', width:'200px' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }                                                             
             ],
@@ -3308,6 +3316,23 @@
                 });
             }
         });
+
+        function togglecheckbox() {
+            let checkboxes = $('.checkbox');
+
+            if (checkboxes.is(':visible')) {
+                checkboxes.hide();  // hide all checkboxes
+            } else {
+                checkboxes.show();  // show all checkboxes
+            }
+            checkboxes.prop('checked', false); 
+
+            if ($('.checkbox:checked').length > 0) {
+                $('#multidelete-btn').show();  // show delete button
+            } else {
+                $('#multidelete-btn').hide();  // hide delete button
+            }
+        }
 
         $('#status').on('change', function () {
             UserTable.ajax.reload();
@@ -3827,7 +3852,8 @@
                     }
                 }
 
-                // 
+                
+                
 
                 
 
@@ -3851,7 +3877,15 @@
 
                 if ($('#handle_type').val() == 'C-PUNCH') {
                     $('.handle_weight').val('0').prop('readonly', true);
-                }                
+                }   
+                
+                
+                if ($('#handle_type').val() == 'C-PUNCH' || $('#handle_type').val() == 'NONE') {
+                    $('#handle-weight-bag-div').hide().find('input, select, textarea').val('').prop('checked', false).prop('selected', false);
+                }
+                else{
+                    $('#handle-weight-bag-div').show();
+                }
 
                 let job_cut = data.job_cut;
 
@@ -4353,9 +4387,13 @@
                 if ($('#handle_type').val() == 'C-PUNCH') {
                     $('.handle_weight').val('0').prop('readonly', true);
                 }
-                // else{
-                //     $('.handle_weight').val('').prop('readonly', false);
-                // }
+                
+                if ($('#handle_type').val() == 'C-PUNCH' || $('#handle_type').val() == 'NONE') {
+                    $('#handle-weight-bag-div').hide().find('input, select, textarea').val('').prop('checked', false).prop('selected', false);
+                }
+                else{
+                    $('#handle-weight-bag-div').show();
+                }
 
                 let job_cut = data.job_cut;
 

@@ -132,32 +132,6 @@
                                             <h3 class="fw-semibold text-dark border-bottom pb-2">Masters</h3>
                                         </div>
 
-                                        <!-- All Jobs Card -->
-                                        {{-- @if (hasPermission('Job Name View', 'View'))	
-                                        <div class="col-lg-4 col-md-6">
-                                            <a href="{{ route('jobnames.view') }}" class="text-decoration-none">
-                                                <div class="card border-0 shadow-lg rounded-4 bg-white hover-shadow p-4 transition" style="min-height: 150px;">
-                                                    <div class="card-body d-flex align-items-center">
-                                                        <div class="me-4 text-primary">
-                                                            <!-- Clipboard SVG Icon -->
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" viewBox="0 0 24 24">
-                                                                <path d="M10 4H4a2 2 0 0 0-2 2v2h8V4zm0 4H2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8h-8l-2-2zm6.293 4.293 1.414 1.414L13 18.414l-3.707-3.707 1.414-1.414L13 15.586l3.293-3.293z"/>
-                                                            </svg>
-
-                                                        </div>
-                                                        <div>
-                                                            <h5 class="text-muted mb-1">All Job Names</h5>
-                                                            <h3 class="fw-bold text-dark">
-                                                                {{ \App\Models\JobNames::where('status', '1')->count() }}
-                                                            </h3>
-                                                            <small class="text-muted">Active Job Names</small>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                        @endif --}}
-
                                         <!-- Pending Jobs Card -->
                                         @if (hasPermission('Job Type View', 'View'))
                                         <div class="col-lg-4 col-md-6">
@@ -182,6 +156,32 @@
                                             </a>
                                         </div>
                                         @endif
+
+                                        <!-- All Jobs Card -->
+                                        {{-- @if (hasPermission('Job Name View', 'View'))	
+                                        <div class="col-lg-4 col-md-6">
+                                            <a href="{{ route('jobnames.view') }}" class="text-decoration-none">
+                                                <div class="card border-0 shadow-lg rounded-4 bg-white hover-shadow p-4 transition" style="min-height: 150px;">
+                                                    <div class="card-body d-flex align-items-center">
+                                                        <div class="me-4 text-primary">
+                                                            <!-- Clipboard SVG Icon -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" viewBox="0 0 24 24">
+                                                                <path d="M10 4H4a2 2 0 0 0-2 2v2h8V4zm0 4H2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8h-8l-2-2zm6.293 4.293 1.414 1.414L13 18.414l-3.707-3.707 1.414-1.414L13 15.586l3.293-3.293z"/>
+                                                            </svg>
+
+                                                        </div>
+                                                        <div>
+                                                            <h5 class="text-muted mb-1">All Job Names</h5>
+                                                            <h3 class="fw-bold text-dark">
+                                                                {{ \App\Models\JobNames::where('status', '1')->count() }}
+                                                            </h3>
+                                                            <small class="text-muted">Active Job Names</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        @endif --}}                                        
 
                                         @if (hasPermission('Party View', 'View'))	
                                         <div class="col-lg-4 col-md-6">

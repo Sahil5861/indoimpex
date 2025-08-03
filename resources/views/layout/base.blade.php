@@ -12,6 +12,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+
     
 
     {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/css/lightgallery-bundle.min.css"> --}}
@@ -42,6 +46,18 @@
       max-height: 150px;
       margin: 10px;
   }
+
+    select[name="role-table_length"] {
+        width: 200px !important;
+    }
+
+    table thead th{
+        text-align: center !important;
+    }
+
+    .sidebar{
+        width: 16%;
+    }
   /* From Uiverse.io by abrahamcalsin */ 
 
 </style>
@@ -110,6 +126,15 @@
     <script src="{{ asset('assets/js/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/demo/demo_configurator.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap/bootstrap.bundle.min.js') }}"></script>
+    
+    
+
+    <!-- JSZip and pdfmake (for Excel & PDF export) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+
     <!-- /core JS files -->
 
     <!-- Theme JS files -->
@@ -127,10 +152,30 @@
     <script src="{{ asset('assets/js/vendor/notifications/sweet_alert.min.js') }}"></script>
     <script src="{{ asset('full/assets/js/app.js') }}"></script>
     {{-- <script src="{{ asset('assets/demo/pages/table_elements.js') }}"></script> --}}
+
+    {{-- datatables js starts --}}
+
     <script src="{{ asset('assets/demo/pages/datatables_basic.js') }}"></script>
+    <script src="{{ asset('assets/js/vendor/tables/datatables/datatables.min.js') }}"></script>
+
+
+
+    <!-- DataTables JS -->
+    {{-- <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script> --}}
+
+    <!-- ✅ Buttons Extension -->
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
+
+    {{-- datatables js end --}}
+
+
+
+
     <!-- /additional JS files -->
 
-    <script src="{{ asset('assets/js/vendor/tables/datatables/datatables.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <!-- Include Moment.js -->
     {{-- <script src="{{ asset('assets/demo/pages/extra_sweetalert.js') }}"></script> --}}
@@ -154,6 +199,17 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+    </script>
+
+    <script>
+        $(document).on('change', '.checkbox', function() {
+        // Check if any checkbox is checked
+        if ($('.checkbox:checked').length > 0) {
+            $('#multidelete-btn').show();  // show delete button
+        } else {
+            $('#multidelete-btn').hide();  // hide delete button
+        }
+    });
     </script>
 
 

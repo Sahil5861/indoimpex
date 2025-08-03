@@ -50,7 +50,10 @@
                     </div>
                     <div class="card-body">
                         @if(session('success'))
-                            <div class="alert alert-success">{{ session('success') }}</div>
+                            <div class="alert alert-success">                                
+                                {{ session('success') }}
+                                <button type="button" style="float: right;" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
                         @endif
 
                         <div class="table-responsive">
@@ -158,7 +161,8 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Job Name :</label>
-                                    <input type="text" id="job_name" class="form-control" required placeholder="Enter Job Name" name="job_name" value="{{ old('job_name') }}" readonly>
+                                    <input type="text" class="form-control" id="job_name" required placeholder="Enter Job Name" name="job_name" value="{{ old('job_name') }}" onblur="updateJobParty();" oninput="this.value = this.value.toUpperCase();" style="position: relative">
+                                    <div id="job_name_list" class="suggestions" style="position: absolute;width: 100%;top: 80%;background-color: #fff;z-index: 10; display:none; overflow:auto; max-height:290px;"></div>
                                 </div>
                             </div>
 
@@ -383,6 +387,9 @@
         }
     });
 
+    
+
+    let jobSuggestions = [];
     let selectedPartyIndex = -1;
     $('#autocomplete').on('keydown', function (event){
 
@@ -449,6 +456,111 @@
         }
     })
 
+
+    let jobNameSuggestions = [];
+    let selectedJobIndex = -1;
+    $('#job_name').on('keydown', function (event){
+        
+        if (event.key === 'Backspace' || event.key === 'Delete') {
+            return;
+        }  
+
+        if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+            let items = $('#job_name_list li');            
+
+            if (items.length === 0) return;
+
+            // Remove existing highlight
+            items.removeClass('highlight');
+
+            if (event.key === 'ArrowDown') {                
+                selectedJobIndex = (selectedJobIndex + 1) % items.length;
+                $('#job_name').val(items.eq(selectedJobIndex).text());
+            } else if (event.key === 'ArrowUp') {
+
+                if (selectedJobIndex == 0) {
+                    $('#job_name').focus();
+                    selectedJobIndex = -1;
+                    return;
+                }
+                selectedJobIndex = (selectedJobIndex - 1 + items.length) % items.length;
+                $('#job_name').val(items.eq(selectedJobIndex).text());
+            }
+
+            // Add highlight to the selected item
+            items.eq(selectedJobIndex).addClass('highlight');
+            return;
+        }
+
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            const items = $('#job-list li'); 
+            
+            jobNameSuggestions = [];
+
+
+            jobNameSuggestions = Array.from(items).map(item => $(item).text().trim());
+                    
+            $('#job_name_list').hide();
+
+            if (items.length > 0 && selectedJobIndex >= 0) {
+                $('#job_name').val(items.eq(selectedJobIndex).text());
+            } else if (jobNameSuggestions.length > 0) {
+                const currentVal = $('#job_name').val().toLowerCase();
+                const exactMatch = jobNameSuggestions.find(p => p.toLowerCase() === currentVal);
+
+                if (!exactMatch) {
+                    $('#job_name').val(jobNameSuggestions[0]);
+                }
+            }
+            
+            selectedJobIndex = -1;    
+            
+            updateJobParty()
+            return false;
+        }
+
+
+        selectedJobIndex = -1;
+        let query = $(this).val();        
+
+        if (query.length == 0) {
+            // $('#party_name').val('');
+            $('#job_name_list').hide();
+            // partySuggestions = [];
+            return;
+        }
+
+        if (query.length >= 1) {
+            $.ajax({
+                url : "{{route('get-job-names')}}",
+                type : 'GET',
+                data : { val : query },
+                success : function(data) {
+                    
+                    $('#job_name_list').empty();                    
+                    
+                    if (data.job_names) {                    
+                        jobNameSuggestions = data.job_names.job_name;
+                        let html = '';
+
+                        $.each(data.job_names, function(key, value) {                    
+                            html += `<li style="padding:10px; cursor:pointer; list-style:none;" onclick="job_name.value = this.innerText;manageJobnames(this);">${value.job_name}</li>`
+                        })
+                        $('#job_name_list').append(html).show();
+                    }
+                    else{
+                        $('#job_name_list').empty().hide();
+                    }
+                },
+                error : function(xhr, status, error) {
+                    console.log(xhr);
+                }
+            });
+        }
+
+    })
+
     var table = $('#example5').DataTable({});
     $(".close_table").click(function() {
         $(this).closest("tr").hide();
@@ -456,6 +568,17 @@
     $(".shownextrow").click(function() {
         $(this).closest("tr").next().show();
     });
+
+    function manageJobnames(elem){
+        let jobName = $(elem).text();        
+        $('#job_name').val(jobName);
+
+        $('#job_name_list').empty().hide();
+
+        setTimeout(() => {            
+            updateJobParty();
+        }, 100);
+    }
 
     function makeJobcodeList(elem){
         var jobcode = $(elem).val();
@@ -469,7 +592,7 @@
                 
                 if (data.jobcode) {                    
                     $.each(data.jobcode, function(key, value) {                    
-                        html += `<li style="padding:10px; cursor:pointer; list-style:none;" onclick="manageJobcode()">${value}</li>`
+                        html += `<li style="padding:10px; cursor:pointer; list-style:none;" onclick="autocomplete.value = this.innerText;manageJobcode()">${value}</li>`
                     })
                     $('#job-list').append(html).show();
                 }
@@ -505,6 +628,7 @@
 
     function manageJobcode(){
         var jobcode = $('#autocomplete').val();        
+        $('#job_name_list').hide();
         $.ajax({
             url: `{{ route('get-jobcode') }}`,
             method: 'GET',
@@ -520,6 +644,33 @@
         })
 
         $('#job-list').hide();        
+    }
+
+    
+
+    function updateJobParty(elem){
+        let job_name = $('#job_name').val();
+        $.ajax({
+            url : "{{route('get-jobcode-party')}}",
+            method: 'GET',
+            data: {
+                job_name: job_name
+            },            
+            success: function(response){
+                console.log(response); 
+
+                if (response.status == true) {
+                    let data = response.data;
+
+                    $('#autocomplete').val(data.job_code);
+                    $('#job_name').val(job_name)
+                    $("#job_code_id").val(data.job_name.id);
+                    $("#party_name").val(data.party.party_name);
+
+                    $('#job_name_list').empty().hide();
+                }                                                              
+            }
+        })
     }
 
     

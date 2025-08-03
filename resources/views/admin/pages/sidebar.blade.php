@@ -47,8 +47,8 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ route('jobdetails.view') }}"
-                        class="nav-link {{ request()->routeIs('jobdetails.view') ? 'active' : '' }}">
+                    <a href="{{ route('admin.masters') }}"
+                        class="nav-link {{ request()->routeIs('admin.masters') ? 'active' : '' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M9 2a1 1 0 0 0-1 1v1H6a2 2 0 0 0-2 2v14c0 1.103.897 2 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V3a1 1 0 0 0-1-1H9zm0 2h6v1H9V4zm-3 3h12v14H6V7zm2 2v2h8V9H8zm0 4v2h8v-2H8z"/>
                         </svg>
@@ -59,7 +59,7 @@
                 @if (hasPermission('Bopp Stock Items View', 'View') ||  hasPermission('Bopp Stock Categories View', 'View'))								
                 <li class="nav-item nav-item-submenu">
                     <a href="#" class="nav-link {{ request()->routeIs('boppstock.items.view') || request()->routeIs('bopp-stock.categories.view') ? 'active' : '' }}">
-                        <i class="ph-layout"></i>
+                        <i class="ph-squares-four"></i>
                         <span>Bopp</span>
                     </a>
                     <ul class="nav-group-sub {{request()->routeIs('boppstock.items.view', 'bopp-stock.categories.view') ? '' : 'collapse'}}">                        
@@ -67,23 +67,103 @@
                         <li class="nav-item">
                             <a href="{{route('boppstock.items.view')}}"
                                 class="nav-link {{ request()->routeIs('boppstock.items.view') ? 'active' : '' }}">
-                                <i class="ph-layout"></i>
+                                <i class="ph-cube"></i> 
                                 <span>Items</span>
                             </a>
                         </li>      
                         @endif
-                        @if (hasPermission('Bopp Stock Items View', 'View'))								                  
+                        @if (hasPermission('Bopp Stock Categories View', 'View'))								                  
                         <li class="nav-item">
                             <a href="{{route('bopp-stock.categories.view')}}"
                                 class="nav-link {{ request()->routeIs('bopp-stock.categories.view') ? 'active' : '' }}">
-                                <i class="ph-layout"></i>
+                                <i class="ph-dots-nine"></i> 
                                 <span>Categories</span>
                             </a>
                         </li>
                         @endif
                     </ul>
                 </li> 
-                @endif               
+                @endif
+                
+                @if (hasPermission('Non Woven Fabric Items View', 'View') ||  hasPermission('Non Woven Fabric Categories View', 'View'))								
+                <li class="nav-item nav-item-submenu">
+                    <a href="#" class="nav-link {{ request()->routeIs('non-wovenfabricstock.items.view') || request()->routeIs('non-wovenfabricstock.categories.view') ? 'active' : '' }}">
+                        <i class="ph-stack"></i>
+                        <span>Non Woven</span>
+                    </a>
+                    <ul class="nav-group-sub {{request()->routeIs('non-wovenfabricstock.items.view', 'non-wovenfabricstock.categories.view') ? '' : 'collapse'}}">                        
+                        @if (hasPermission('Non Woven Fabric Items View', 'View'))								
+                        <li class="nav-item">
+                            <a href="{{route('non-wovenfabricstock.items.view')}}"
+                                class="nav-link {{ request()->routeIs('non-wovenfabricstock.items.view') ? 'active' : '' }}">
+                                <i class="ph-cube"></i> 
+                                <span>Items</span>
+                            </a>
+                        </li>      
+                        @endif
+                        @if (hasPermission('Non Woven Fabric Categories View', 'View'))								                  
+                        <li class="nav-item">
+                            <a href="{{route('non-wovenfabricstock.categories.view')}}"
+                                class="nav-link {{ request()->routeIs('non-wovenfabricstock.categories.view') ? 'active' : '' }}">
+                                <i class="ph-dots-nine"></i> 
+                                <span>Categories</span>
+                            </a>
+                        </li>
+                        @endif
+                    </ul>
+                </li> 
+                @endif
+
+                @if (hasPermission('PP Woven Fabric stock Items View', 'View') || hasPermission('PP Woven Fabric stock Categories View', 'View'))									
+                <li class="nav-item nav-item-submenu">
+                    <a href="#" class="nav-link {{ request()->routeIs('ppwovenfabricstock.items.view') || request()->routeIs('ppwovenfabricstock.categories.view') ? 'active' : '' }}">
+                        <i class="ph-folders"></i>  
+                        <span>PP Woven</span>
+                    </a>
+                    <ul class="nav-group-sub {{request()->routeIs('ppwovenfabricstock.items.view', 'ppwovenfabricstock.categories.view') ? '' : 'collapse'}}">                        
+                        @if (hasPermission('PP Woven Fabric stock Items View', 'View'))										
+                        <li class="nav-item">
+                            <a href="{{route('ppwovenfabricstock.items.view')}}"
+                                class="nav-link {{ request()->routeIs('ppwovenfabricstock.items.view') ? 'active' : '' }}">
+                                <i class="ph-cube"></i> 
+                                <span>Items</span>
+                            </a>
+                        </li>      
+                        @endif
+                        @if (hasPermission('PP Woven Fabric stock Categories View', 'View'))
+                        <li class="nav-item">
+                            <a href="{{route('ppwovenfabricstock.categories.view')}}"
+                                class="nav-link {{ request()->routeIs('ppwovenfabricstock.categories.view') ? 'active' : '' }}">
+                                <i class="ph-dots-nine"></i> 
+                                <span>Categories</span>
+                            </a>
+                        </li>
+                        @endif
+                    </ul>
+                </li> 
+                @endif
+
+                @if (hasPermission('Party View', 'View'))									
+                <li class="nav-item">
+                    <a href="{{route('admin.party')}}"
+                        class="nav-link {{ request()->routeIs('admin.party') ? 'active' : '' }}">
+                        <i class="ph-user-circle"></i>
+                        <span>Party</span>
+                    </a>
+                </li>      
+                @endif
+
+                @if (hasPermission('Job Type View', 'View'))											
+                <li class="nav-item">
+                    <a href="{{route('jobtypes.view')}}"
+                        class="nav-link {{ request()->routeIs('jobtypes.view') ? 'active' : '' }}">
+                        <i class="ph-clipboard"></i>
+                        <span>Job Types</span>
+                    </a>
+                </li>      
+                @endif
+
+                
 
             </ul>
 
