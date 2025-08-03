@@ -213,24 +213,33 @@
 								@endif
 								
 								<li class="nav-item dropdown">
-									<a href="#" class="navbar-nav-link dropdown-toggle {{ $isActiveStock ? 'rounded active' : '' }}" data-bs-toggle="dropdown">
-										<i class="ph-gear me-2"></i> Stocks
-									</a>
-									<ul class="dropdown-menu">
-										<li class="dropdown-submenu">
-											<a class="dropdown-item dropdown-toggle" href="#">Materialistic Stock</a>
-											<ul class="dropdown-menu">
-												<li class="dropdown-submenu">
-													<a class="dropdown-item dropdown-toggle" href="#">Bopp</a>
-													<ul class="dropdown-menu">
-														<li><a class="dropdown-item" href="{{ route('admin.material-stock.bopp') }}">Consolidated</a></li>
-														<li><a class="dropdown-item" href="{{ route('admin.material-stock.bopp-roll') }}">Roll Form</a></li>
-													</ul>
-												</li>
-											</ul>
-										</li>
-									</ul>
-								</li>
+								<a href="#" class="navbar-nav-link dropdown-toggle {{ request()->routeIs('admin.material-stock.*') ? 'rounded active' : '' }}" data-bs-toggle="dropdown">
+									<i class="ph-gear me-2"></i> Stocks
+								</a>
+								<ul class="dropdown-menu">
+									<li class="dropdown-submenu">
+										<a class="dropdown-item dropdown-toggle" href="#">Materialistic Stock</a>
+										<ul class="dropdown-menu">
+											<li class="dropdown-submenu">
+												<a class="dropdown-item dropdown-toggle" href="#">Bopp</a>
+												<ul class="dropdown-menu">
+													<li>
+														<a class="dropdown-item {{ request()->routeIs('admin.material-stock.bopp') ? 'fw-bold text-primary' : '' }}" href="{{ route('admin.material-stock.bopp') }}">
+															Consolidated
+														</a>
+													</li>
+													<li>
+														<a class="dropdown-item {{ request()->routeIs('admin.material-stock.bopp-roll') ? 'fw-bold text-primary' : '' }}" href="{{ route('admin.material-stock.bopp-roll') }}">
+															Roll Form
+														</a>
+													</li>
+												</ul>
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+
 						
 
 								@if (hasPermission('Order Book View', 'View'))						
