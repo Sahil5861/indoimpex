@@ -130,47 +130,10 @@
     @include('admin.pages.jobdetails.sidebar', ['sidebarTitle' => 'Job Details'])
     <div class="content-wrapper">
         <div class="content-inner">
-            {{-- <div class="page-header page-header-light shadow">
-                <div class="page-header-content d-lg-flex">
-                    <div class="d-flex">
-                        <h4 class="page-title mb-0">
-                            Dashboard - <span class="fw-normal">Job Details | {{ucfirst($request_type)}}</span>
-                        </h4>
-                        <a href="#page_header"
-                            class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto"
-                            data-bs-toggle="collapse">
-                            <i class="ph-caret-down collapsible-indicator ph-sm m-1"></i>
-                        </a>
-                    </div>
-                </div>
-            </div> --}}
-
+       
             <div class="content">
                 <div class="row">
-                    {{-- <div class="col-lg-2">
-                        <div class="card sticky-sidebar">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-12 my-2">
-                                        <a href="{{route('jobdetails.view.all')}}" class="btn btn-lg w-100 bg-light {{ Route::currentRouteName() === 'jobdetails.view.all' ? 'rounded active' : '' }}">
-                                            All Jobs
-                                        </a>
-                                    </div>                    
-                                    <div class="col-md-12 my-2">
-                                        <a href="{{route('jobdetails.view.pending')}}" class="btn btn-lg w-100 bg-light {{ Route::currentRouteName() === 'jobdetails.view.pending' ? 'rounded active' : '' }}">
-                                            Pending Jobs
-                                        </a>
-                                    </div>                    
-                                    <div class="col-md-12 my-2">
-                                        <a href="{{route('jobdetails.view.saved')}}" class="btn btn-lg w-100 bg-light {{ Route::currentRouteName() === 'jobdetails.view.saved' ? 'rounded active' : '' }}">
-                                            Saved Jobs
-                                        </a>
-                                    </div>                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
-
+                
                     <div class="col-lg-12 col-sm-12">
                         <div class="card">
                             <div class="card-header">
@@ -221,9 +184,7 @@
                                 <div class="table-responsive">
         
                                     <table id="role-table" class="table table-bordered text-center table-striped">                                
-                                        {{-- <thead>
-                                            <th colspan="6" class="text-left" style="border: none;"><a href="#" class="btn btn-sm btn-teal">click me</a></th>                                    
-                                        </thead> --}}
+                                       
                                         <thead>
                                             <tr>
                                                 <th class="">
@@ -242,12 +203,12 @@
                                                 @endif
                                                                       
                                                 <th>Bag Weight (Gms)</th>                                                                                
-                                                {{-- <th>Cerated on</th>                                         --}}
+                                                                                  --}}
                                                 <th class="text-center">Actions</th>                                                             
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <!-- DataTables will populate this -->                                    
+                                                                    
                                         </tbody>
                                     </table>
                                 </div>
